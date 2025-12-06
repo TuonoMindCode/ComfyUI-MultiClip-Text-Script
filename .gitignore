@@ -1,0 +1,24 @@
+# Editor folders
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environments
+.venv/
+venv/
+.env
+.env.*
+
+# Logs
+*.log
+
+# VS Code workspace files
+*.code-workspace
