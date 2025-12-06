@@ -229,4 +229,9 @@ Clip Selector
   - DOTALL and IGNORECASE enabled.
 - Sorting:
   - Clips are sorted numerically by the parsed number part (e.g., clip02 → 2).
+ 
+  
+## Contact 
+
+tuonomindcode@bahnhof.se
 
