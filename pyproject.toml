@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-multiclip-text-script"
+version = "1.0.0"
+description = "Multi-Clip Text Script nodes for ComfyUI (Main + Clip Selector) for multi-clip prompt workflows."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+[project.urls]
+Repository = "https://github.com/TuonoMindCode/ComfyUI-MultiClip-Text-Script"
+
+[tool.comfy]
+PublisherId = "tuonomind"
+DisplayName = "Tuono Multi-Clip Script"
+Icon = ""
