@@ -1,7 +1,11 @@
 # ComfyUI Multi-Clip Text Script Nodes
 
+**Version:** 1.1.0
+
 <!-- Added a full-width overview image at the very top -->
 <img src="./multiclip_main.PNG" alt="Multi-Clip Text Script - Main overview" width="100%" />
+
+<img src="./simple.png" alt="Multi-Clip Text Script - Main Simple overview" width="100%" />
 
 
 ## How to use it (visual)
@@ -21,10 +25,11 @@ This ComfyUI node was created while I was making Wan 2.2 videos with 81 frames a
 
 This node was generated with ChatGPT 5.1, and this README was also written by ChatGPT.
 
-Two simple nodes that help you author sequence-friendly prompts from a single script that contains multiple clips. You write one text block with (clip01), (clip02), … sections, then select one clip at a time to produce a clean prompt (with shared prefix/suffix and negative prompt).
+Three simple nodes that help you author sequence-friendly prompts from a single script that contains multiple clips. You write one text block with (clip01), (clip02), … sections, then select one clip at a time to produce a clean prompt.
 
 Nodes
-- Multi-Clip Text Script: Main
+- Multi-Clip Text Script: Main (with prefix/suffix/negative)
+- Multi-Clip Text Script: Main Simple (simple version, no prefix/suffix/negative)
 - Multi-Clip Text Script: Clip Selector
 
 Category
@@ -54,8 +59,7 @@ or
 Copy sequence_prompt_nodes.py and __init__.py into your ComfyUI/custom_nodes/ComfyUI-MultiClip-Text-Script.
 Restart ComfyUI.
 Search for:
-  - “Multi-Clip Text Script: Main”
-  - “Multi-Clip Text Script: Clip Selector”
+  - “Multi-Clip Text Script: Main”  - "Multi-Clip Text Script: Main Simple"  - “Multi-Clip Text Script: Clip Selector”
 
 
 ## Script format
@@ -100,6 +104,31 @@ Outputs
 Details
 - If no clips are found, pair_data still contains prefix and suffix. num_clips is 0.
 - Leading/trailing whitespace is trimmed from all pieces.
+
+
+## Node: Multi-Clip Text Script: Main Simple
+
+Purpose
+- Simplified version of Main without prefix/suffix options. Parse the multi-clip script and store per-clip texts in pair_data.
+- Ideal when you only need the clip content without additional prefix/suffix/negative modifiers.
+
+Inputs (required)
+- multi_clip_script (STRING, multiline): Your script with (clipXX) sections.
+
+Outputs
+- pair_data (MULTICLIP_PAIR_DATA): Internal encoded data with all clips (no prefix/suffix).
+- num_clips (INT): Number of parsed clips.
+
+Details
+- Internally, prefix and suffix are empty strings, so the pair_data contains only the clip texts.
+- Connect pair_data to Clip Selector's pair_data input for clip selection.
+- Simpler workflow when you only need basic clip sequencing without decorators.
+
+Typical usage
+- Multi-Clip Text Script: Main Simple
+  - pair_data → Multi-Clip Text Script: Clip Selector.pair_data
+- Multi-Clip Text Script: Clip Selector
+  - clip_text → your text encoder's positive prompt input
 
 
 ## Node: Multi-Clip Text Script: Clip Selector
@@ -171,15 +200,23 @@ Clip Selector
 - negative_text: “low quality, blurry, artifacts”
 
 
-## Typical workflow
+## Typical workflows
 
+### Workflow 1: Full Featured (Main with prefix/suffix/negative)
 - Multi-Clip Text Script: Main
   - pair_data → Multi-Clip Text Script: Clip Selector.pair_data
   - multi_clip_negative → Multi-Clip Text Script: Clip Selector.negative
 - Multi-Clip Text Script: Clip Selector
-  - clip_text → your text encoder’s positive prompt input
-  - negative_text → your text encoder’s negative prompt input
+  - clip_text → your text encoder's positive prompt input
+  - negative_text → your text encoder's negative prompt input
 - Render per-clip by changing clip_number or automating it in a loop.
+
+### Workflow 2: Simple (Main Simple for basic clip sequences)
+- Multi-Clip Text Script: Main Simple
+  - pair_data → Multi-Clip Text Script: Clip Selector.pair_data
+- Multi-Clip Text Script: Clip Selector
+  - clip_text → your text encoder's positive prompt input
+- Render per-clip by changing clip_number.
 
 
 ## Internal encoding (for reference)
@@ -215,13 +252,28 @@ Clip Selector
   - Use auto_format = True to remove trailing commas/semicolons/spaces from each part before joining.
 
 
+## Changelog
+
+### v1.1.0 (January 2, 2026)
+- **NEW:** Added "Multi-Clip Text Script: Main Simple" node - simplified version without prefix/suffix/negative options
+- **IMPROVED:** Updated README with two workflow examples (full-featured and simple)
+- **IMPROVED:** Better documentation for users choosing between Main and Main Simple nodes
+
+### v1.0.0 (Initial Release)
+- Multi-Clip Text Script: Main node with prefix/suffix/negative support
+- Multi-Clip Text Script: Clip Selector node with auto-format option
+- Full documentation and usage examples
+
+
 ## Development notes
 
 - Node classes:
   - MultiClipTextScriptMain
+  - MultiClipTextScriptPositiveOnly (Main Simple)
   - MultiClipTextScriptClipSelector
 - Display names:
-  - “Multi-Clip Text Script: Main”
+  - "Multi-Clip Text Script: Main"
+  - "Multi-Clip Text Script: Main Simple"
   - “Multi-Clip Text Script: Clip Selector”
 - Category: “Text / Multi-Clip”
 - Regex used to parse clips:

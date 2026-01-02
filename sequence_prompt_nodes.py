@@ -142,6 +142,76 @@ class MultiClipTextScriptMain:
         return (payload, num_clips, negative_clean)
 
 
+class MultiClipTextScriptPositiveOnly:
+    """
+    Multi-Clip Text Script: Main Simple
+
+    Förenklad version av Main utan prefix/suffix/negativ.
+
+    Tar endast scriptet med (clip01)(clip02)... och konverterar det till pair_data.
+
+    Användning:
+      - Scriptet med (clip01), (clip02), osv
+      - Utdata pair_data → Clip Selector (din befintliga nod)
+
+    Output:
+      pair_data (MULTICLIP_PAIR_DATA)  – intern sträng med alla clips
+      num_clips (INT)                  – hur många klipp som hittades
+    """
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "multi_clip_script": (
+                    "STRING",
+                    {
+                        "multiline": True,
+                        "default": "(clip01)\nwoman walks forward and waves to the camera\n\n"
+                                   "(clip02)\nwoman walks forward and gets angry\n\n"
+                                   "(clip03)\nwoman throws the phone",
+                    },
+                ),
+            },
+        }
+
+    RETURN_TYPES = ("MULTICLIP_PAIR_DATA", "INT")
+    RETURN_NAMES = ("pair_data", "num_clips")
+    FUNCTION = "parse_simple"
+    CATEGORY = "Text / Multi-Clip"
+
+    def parse_simple(self, multi_clip_script: str):
+        # Hitta alla (clipXX) + text fram till nästa (clipYY) eller slutet
+        pattern = r"\(clip(\d+)\)\s*(.*?)(?=\n\(clip\d+\)|\Z)"
+        matches = re.findall(pattern, multi_clip_script, flags=re.DOTALL | re.IGNORECASE)
+
+        clips = []
+        for idx, text in matches:
+            text = text.strip()
+            if text:
+                clips.append((int(idx), text))
+
+        # Sortera efter clip-nummer
+        clips.sort(key=lambda x: x[0])
+
+        if not clips:
+            # Inga klipp hittade
+            payload = META_SEP.join(["", "", ""])
+            return (payload, 0)
+
+        # Själva klipp-texterna i ordning
+        clip_texts = [t for _, t in clips]
+        clips_blob = CLIP_SEP.join(clip_texts)
+
+        # Kodning i pair_data (samma format som Main, men utan prefix/suffix):
+        #   "" <<META_SEP>> "" <<META_SEP>> clip1 <<CLIP_SEP>> clip2 <<CLIP_SEP>> ...
+        payload = META_SEP.join(["", "", clips_blob])
+        num_clips = len(clip_texts)
+
+        return (payload, num_clips)
+
+
+
 class MultiClipTextScriptClipSelector:
     """
     Multi-Clip Text Script: Clip Selector
@@ -309,9 +379,11 @@ class MultiClipTextScriptClipSelector:
 NODE_CLASS_MAPPINGS = {
     "MultiClipTextScriptMain": MultiClipTextScriptMain,
     "MultiClipTextScriptClipSelector": MultiClipTextScriptClipSelector,
+    "MultiClipTextScriptPositiveOnly": MultiClipTextScriptPositiveOnly,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "MultiClipTextScriptMain": "Multi-Clip Text Script: Main",
     "MultiClipTextScriptClipSelector": "Multi-Clip Text Script: Clip Selector",
+    "MultiClipTextScriptPositiveOnly": "Multi-Clip Text Script: Main Simple",
 }
