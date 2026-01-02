@@ -1,3 +1,5 @@
+__version__ = "1.1.0"
+
 from .sequence_prompt_nodes import (
     MultiClipTextScriptMain,
     MultiClipTextScriptClipSelector,

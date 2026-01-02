@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-multiclip-text-script"
-version = "1.0.0"
+version = "1.1.0"
 description = "Multi-Clip Text Script nodes for ComfyUI (Main + Clip Selector) for multi-clip prompt workflows."
 readme = "README.md"
 requires-python = ">=3.10"
