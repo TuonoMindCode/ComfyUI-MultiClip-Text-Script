@@ -5,7 +5,7 @@
 <!-- Added a full-width overview image at the very top -->
 <img src="./multiclip_main.PNG" alt="Multi-Clip Text Script - Main overview" width="100%" />
 
-<img src="./simple.png" alt="Multi-Clip Text Script - Main Simple overview" width="100%" />
+<img src="./simple.PNG" alt="Multi-Clip Text Script - Main Simple overview" width="100%" />
 
 
 ## How to use it (visual)
