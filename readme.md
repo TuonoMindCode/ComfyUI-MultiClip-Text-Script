@@ -25,6 +25,8 @@ This ComfyUI node was created while I was making Wan 2.2 videos with 81 frames a
 
 I added a simple version of the main node becase i did not really use the other stuff. I just copy the everything inside the "main simple" and paste it to chatgpt and tell chatgpt where it is failing...and it changes it. the prompt i have in the picture is not perfect prompt because when the camera is outside it shows a bit of a porch then it snaps to another porch more nicer, sometimes the prompt i get from chatgpt works sometimes not, i am using wan 2.2 svi v2.0 pro.
 
+I added main simple in a local copy for testing and it worked, but then i uploaded an old __init__.py to github so the simple did not work from github. Main simple should work now.
+
 This node was generated with ChatGPT 5.1, and this README was also written by ChatGPT.
 
 Three simple nodes that help you author sequence-friendly prompts from a single script that contains multiple clips. You write one text block with (clip01), (clip02), … sections, then select one clip at a time to produce a clean prompt.
