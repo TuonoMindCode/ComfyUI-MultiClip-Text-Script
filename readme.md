@@ -1,6 +1,6 @@
 # ComfyUI Multi-Clip Text Script Nodes
 
-**Version:** 1.1.0
+**Version:** 1.1.1
 
 <!-- Added a full-width overview image at the very top -->
 <img src="./multiclip_main.PNG" alt="Multi-Clip Text Script - Main overview" width="100%" />
@@ -257,6 +257,9 @@ Clip Selector
 
 
 ## Changelog
+
+### v1.1.1 (January 16, 2026)
+- **FIX:** Added MultiClipTextScriptPositiveOnly to __init__.py NODE_CLASS_MAPPINGS (Main Simple node now properly registered)
 
 ### v1.1.0 (January 2, 2026)
 - **NEW:** Added "Multi-Clip Text Script: Main Simple" node - simplified version without prefix/suffix/negative options
